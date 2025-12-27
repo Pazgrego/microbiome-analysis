@@ -1,15 +1,19 @@
-data_raw <- read_csv("Downloads/otu-to-test.csv")
+library(tidyverse)
+data_raw <- read_csv("Data/otu-to-test.csv")
 
 
-> data_separated <- separate_rows(data_raw, `Microorganism assingee`, sep = ";\\s*")
+data_separated <- separate_rows(
+  data_raw,
+  `Microorganism assingee`,
+  sep = ";\\s*")
 
 # מאחדים כל שם של מיוקריבי לאחד ועושים sum לכמות
 data_grouped <- data_separated %>%
-  +     group_by(`Microorganism assingee`) %>%
-  +     summarise(
-    +         total_abundance = sum(`Combined Abundance`, na.rm = TRUE)
-    +     ) %>%
-  +     arrange(desc(total_abundance))
+  group_by('Microorganism assignee') %>%
+  summarise(
+    total_abundance = sum(`Combined Abundance`, na.rm = TRUE)
+  ) %>%
+  arrange(desc(total_abundance))
 
 
 data_sorted <- data_grouped[order(-data_grouped$total_abundance), ]
